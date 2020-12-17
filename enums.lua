@@ -23,8 +23,10 @@ return {
     Menu = 0,
     Generate = 1,
     Plugins = 2,
+    Options = 3,
     ScreenNames = {
         "generate",
         "plugins",
+        "options",
     }
 }

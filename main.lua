@@ -101,6 +101,10 @@ function love.mousepressed( x, y, button, istouch, presses )
             Main.NextScreen = Enums.Plugins
             Main.Fade = Enums.FadeOut
         end
+        if x >= 22 and y >= 137 and x < 58 and y < 146 then --options
+            Main.NextScreen = Enums.Options
+            Main.Fade = Enums.FadeOut
+        end
         if x >= 22 and y >= 161 and x < 58 and y < 170 then --quit
             love.event.quit()
         end
