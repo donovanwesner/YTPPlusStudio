@@ -1,4 +1,11 @@
 return {
+    Version = {
+        Major = 0,
+        Minor = 1,
+        Patch = 0,
+        Label = "publictestbuild",
+        Candidate = 1
+    },
     Width = 320,
     Height = 240,
     WindowFlags = {
