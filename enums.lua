@@ -27,6 +27,6 @@ return {
     ScreenNames = {
         "generate",
         "plugins",
-        "options",
+        "options"
     }
 }

@@ -1,5 +1,6 @@
 
 function love.load()
+    Audio = require("audio")
     Graphics = require("gfx")
     Enums = require("enums")
     Data = require("data")
@@ -61,6 +62,11 @@ function love.draw()
     --fading
     love.graphics.setColor(1,1,1,Main.ScreenWait)
     love.graphics.rectangle("fill",0,0,Enums.Width,Enums.Height)
+    --color tint, commented for later functionality
+    --[[
+    love.graphics.setColor(1,0,1,0.1) --transparent red
+    love.graphics.rectangle("fill",0,0,Enums.Width,Enums.Height)
+    ]]
     love.graphics.setCanvas() --This sets the target back to the screen
     love.graphics.setColor(1,1,1) --#FFFFFF
     love.graphics.draw(Canvas, 0, 0, 0, Data.Scaling, Data.Scaling)
@@ -92,24 +98,26 @@ end
 function love.mousepressed( x, y, button, istouch, presses )
     x = x/Data.Scaling
     y = y/Data.Scaling
+    Audio.Hover:play()
     if Main.ActiveScreen == Enums.Menu then
         if x >= 22 and y >= 89 and x < 58 and y < 98 then --generate
             Main.NextScreen = Enums.Generate
             Main.Fade = Enums.FadeOut
-        end
-        if x >= 22 and y >= 113 and x < 58 and y < 122 then --plugins
+            Audio.Select:play()
+        elseif x >= 22 and y >= 113 and x < 49 and y < 122 then --plugins
             Main.NextScreen = Enums.Plugins
             Main.Fade = Enums.FadeOut
-        end
-        if x >= 22 and y >= 137 and x < 58 and y < 146 then --options
+            Audio.Select:play()
+        elseif x >= 22 and y >= 137 and x < 51 and y < 146 then --options
             Main.NextScreen = Enums.Options
             Main.Fade = Enums.FadeOut
-        end
-        if x >= 22 and y >= 161 and x < 58 and y < 170 then --quit
+            Audio.Select:play()
+        elseif x >= 22 and y >= 161 and x < 37 and y < 170 then --quit
             love.event.quit()
         end
     elseif x >= 2 and y >= 2 and x < 19 and y < 19 then --back button
         Main.NextScreen = Enums.Menu
         Main.Fade = Enums.FadeOut
+        Audio.Back:play()
     end
 end
