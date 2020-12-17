@@ -1,5 +1,5 @@
 local data = {
-    Scaling = 1
+    Scaling = 2
 }
 --add code to save/load this data here
 return data
