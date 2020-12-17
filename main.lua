@@ -97,6 +97,13 @@ function love.mousepressed( x, y, button, istouch, presses )
             Main.NextScreen = Enums.Generate
             Main.Fade = Enums.FadeOut
         end
+        if x >= 22 and y >= 113 and x < 58 and y < 122 then --plugins
+            Main.NextScreen = Enums.Plugins
+            Main.Fade = Enums.FadeOut
+        end
+        if x >= 22 and y >= 161 and x < 58 and y < 170 then --quit
+            love.event.quit()
+        end
     elseif x >= 2 and y >= 2 and x < 19 and y < 19 then --back button
         Main.NextScreen = Enums.Menu
         Main.Fade = Enums.FadeOut

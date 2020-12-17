@@ -22,7 +22,9 @@ return {
     --screens
     Menu = 0,
     Generate = 1,
+    Plugins = 2,
     ScreenNames = {
-        "generate"
+        "generate",
+        "plugins",
     }
 }
