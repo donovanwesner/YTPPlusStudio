@@ -64,7 +64,7 @@ function love.draw()
     love.graphics.rectangle("fill",0,0,Enums.Width,Enums.Height)
     --color tint, commented for later functionality
     --[[
-    love.graphics.setColor(1,0,1,0.1) --transparent red
+    love.graphics.setColor(1,0,1,0.1) --pinkish?
     love.graphics.rectangle("fill",0,0,Enums.Width,Enums.Height)
     ]]
     love.graphics.setCanvas() --This sets the target back to the screen

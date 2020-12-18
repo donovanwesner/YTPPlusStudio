@@ -6,6 +6,7 @@ return {
         Label = "publictestbuild",
         Candidate = 1
     },
+    --window options
     Width = 320,
     Height = 240,
     WindowFlags = {
@@ -23,6 +24,7 @@ return {
         minheight = 240
     },
     BackgroundSize = 28,
+    --fade types
     FadeNone = nil,
     FadeOut = 0,
     FadeIn = 1,
