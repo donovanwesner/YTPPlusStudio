@@ -1,11 +1,13 @@
-
 function love.load()
     Audio = require("audio")
     Graphics = require("gfx")
     Enums = require("enums")
     Data = require("data")
+    Cron = require ("cron")
     Canvas = love.graphics.newCanvas(Enums.Width,Enums.Height)
     Canvas:setFilter("nearest", "nearest")
+    FlipR = 0
+    DoFlip = 0
     Main = {
         ActiveScreen = Enums.Menu,
         NextScreen = Enums.Menu,
@@ -53,7 +55,7 @@ function love.draw()
     else --menu
         --header
         love.graphics.setColor(1,1,1) --#FFFFFF
-        love.graphics.draw(Graphics.Icon,129,4)
+        love.graphics.draw(Graphics.Icon,129,4,FlipR)
         love.graphics.setFont(Graphics.Munro.Regular)
         love.graphics.print("ytp+ studio",146,6-3)
         --buttons
@@ -78,6 +80,14 @@ function love.update()
     elseif Main.Fade == Enums.FadeOut then
         Main.Fade = Enums.FadeIn
         Main.ActiveScreen  = Main.NextScreen
+    end
+    --logo speen !!!MAKE THIS A FOR LOOP EVENTUALLY!!!
+    while FlipR ~= 360 do
+        FlipR = FlipR + 1
+    end
+    if FlipR == 360 then
+        DoFlip = 0
+        FlipR = 0
     end
     if Main.Fade == Enums.FadeIn and Main.ScreenWait > 0 then
         Main.ScreenWait = Main.ScreenWait - 0.1
@@ -111,6 +121,9 @@ function love.mousepressed( x, y, button, istouch, presses )
         elseif x >= 22 and y >= 137 and x < 51 and y < 146 then --options
             Main.NextScreen = Enums.Options
             Main.Fade = Enums.FadeOut
+            Audio.Select:play()
+        elseif x >= 129 and y >= 4 and x < 142 and y < 17 then --cool logo flip
+            DoFlip = 1
             Audio.Select:play()
         elseif x >= 22 and y >= 161 and x < 37 and y < 170 then --quit
             love.event.quit()
