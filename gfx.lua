@@ -3,7 +3,6 @@ local Enums = require("enums")
 tiles:setWrap("repeat", "repeat")
 return {
     Icon = love.graphics.newImage( "graphics/icon.png" ),
-    IconFlip = love.graphics.newImage)( "graphics/icon-export.png" ),
     Back = love.graphics.newImage( "graphics/backbutton.png" ),
     Tiles = tiles,
     TiledQuad = love.graphics.newQuad(0, 0, Enums.Width, Enums.Height, tiles:getWidth(), tiles:getHeight()),
