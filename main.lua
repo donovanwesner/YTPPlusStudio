@@ -3,10 +3,10 @@ function love.load()
     Graphics = require("gfx")
     Enums = require("enums")
     Data = require("data")
-    Cron = require ("cron")
     Canvas = love.graphics.newCanvas(Enums.Width,Enums.Height)
     Canvas:setFilter("nearest", "nearest")
     Main = {
+        LastScreen = Enums.Menu,
         ActiveScreen = Enums.Menu,
         NextScreen = Enums.Menu,
         Fade = Enums.FadeNone,
@@ -79,7 +79,8 @@ function love.update()
         Main.ScreenWait = Main.ScreenWait + 0.1
     elseif Main.Fade == Enums.FadeOut then
         Main.Fade = Enums.FadeIn
-        Main.ActiveScreen  = Main.NextScreen
+        Main.LastScreen = Main.ActiveScreen
+        Main.ActiveScreen = Main.NextScreen
     end
     if Main.Fade == Enums.FadeIn and Main.ScreenWait > 0 then
         Main.ScreenWait = Main.ScreenWait - 0.1
@@ -90,9 +91,9 @@ function love.update()
     -- scrolling bg
     Main.W = Main.W + 1
     if Main.W == 3 then
-        if Main.Flipping == true and Main.Flip < 10 then
-            Main.Flip = Main.Flip + 1
-        elseif Main.Flip == 10 then
+        if Main.Flipping == true and Main.Flip > -10 then --logo flip
+            Main.Flip = Main.Flip - 1
+        elseif Main.Flip == -10 then
             Main.Flipping = false
             Main.Flip = 0
         end
@@ -127,8 +128,28 @@ function love.mousepressed( x, y, button, istouch, presses )
             love.event.quit()
         end
     elseif x >= 2 and y >= 2 and x < 19 and y < 19 then --back button
-        Main.NextScreen = Enums.Menu
+        Main.NextScreen = Main.LastScreen
         Main.Fade = Enums.FadeOut
         Audio.Back:play()
+    end
+end
+function love.keypressed(k)
+    --alt operators
+    if love.keyboard.isDown("ralt") or love.keyboard.isDown("lalt") then
+        if k == "left" and Main.ActiveScreen ~= Enums.Menu then --back
+            Main.NextScreen = Main.LastScreen
+            Main.Fade = Enums.FadeOut
+            Audio.Back:play()
+        end
+        --up and down buttons removed because they can break submenus
+        --[[elseif k == "up" and Main.ActiveScreen - 1 >= Enums.Menu and Main.ActiveScreen ~= Enums.Menu then --up
+            Main.NextScreen = Main.ActiveScreen - 1
+            Main.Fade = Enums.FadeOut
+            Audio.Select:play()
+        elseif k == "down" and Main.ActiveScreen + 1 < Enums.LastScreen then --down
+            Main.NextScreen = Main.ActiveScreen + 1
+            Main.Fade = Enums.FadeOut
+            Audio.Select:play()
+        end]]
     end
 end

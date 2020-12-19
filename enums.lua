@@ -33,6 +33,7 @@ return {
     Generate = 1,
     Plugins = 2,
     Options = 3,
+    LastScreen = 4, --how many screens are there?
     ScreenNames = {
         "generate",
         "plugins",
