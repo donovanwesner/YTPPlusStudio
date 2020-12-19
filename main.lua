@@ -90,9 +90,9 @@ function love.update()
     -- scrolling bg
     Main.W = Main.W + 1
     if Main.W == 3 then
-        if Main.Flipping == true and Main.Flip < 10 then
-            Main.Flip = Main.Flip + 1
-        elseif Main.Flip == 10 then
+        if Main.Flipping == true and Main.Flip < 1 and Main.Flip ~= -10 then
+            Main.Flip = Main.Flip - 1
+        elseif Main.Flip == -10 then
             Main.Flipping = false
             Main.Flip = 0
         end
