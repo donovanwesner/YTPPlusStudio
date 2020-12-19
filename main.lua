@@ -108,7 +108,6 @@ end
 function love.mousepressed( x, y, button, istouch, presses )
     x = x/Data.Scaling
     y = y/Data.Scaling
-    Audio.Hover:play()
     if Main.ActiveScreen == Enums.Menu then
         if x >= 22 and y >= 89 and x < 58 and y < 98 then --generate
             Main.NextScreen = Enums.Generate
@@ -127,6 +126,8 @@ function love.mousepressed( x, y, button, istouch, presses )
             Audio.Select:play()
         elseif x >= 22 and y >= 161 and x < 37 and y < 170 then --quit
             love.event.quit()
+        else
+            Audio.Hover:play()
         end
     elseif x >= 2 and y >= 2 and x < 19 and y < 19 then --back button
         Main.NextScreen = Main.LastScreen
