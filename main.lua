@@ -6,8 +6,6 @@ function love.load()
     Cron = require ("cron")
     Canvas = love.graphics.newCanvas(Enums.Width,Enums.Height)
     Canvas:setFilter("nearest", "nearest")
-    FlipR = 0
-    DoFlip = 0
     Main = {
         ActiveScreen = Enums.Menu,
         NextScreen = Enums.Menu,
@@ -16,6 +14,8 @@ function love.load()
         W = 0,
         X = 0,
         Y = 0,
+        Flip = 0,
+        Flipping = false
     }
     love.window.setMode( Enums.Width*Data.Scaling, Enums.Height*Data.Scaling, Enums.WindowFlags )
     love.mouse.setCursor( Graphics.Cursor )
@@ -55,7 +55,7 @@ function love.draw()
     else --menu
         --header
         love.graphics.setColor(1,1,1) --#FFFFFF
-        love.graphics.draw(Graphics.Icon,129,4,FlipR)
+        love.graphics.draw(Graphics.Icon, 129+Graphics.Icon:getWidth()/2,4+Graphics.Icon:getHeight()/2, Main.Flip, 1, 1, Graphics.Icon:getWidth()/2, Graphics.Icon:getHeight()/2)
         love.graphics.setFont(Graphics.Munro.Regular)
         love.graphics.print("ytp+ studio",146,6-3)
         --buttons
@@ -81,14 +81,6 @@ function love.update()
         Main.Fade = Enums.FadeIn
         Main.ActiveScreen  = Main.NextScreen
     end
-    --logo speen !!!MAKE THIS A FOR LOOP EVENTUALLY!!!
-    while FlipR ~= 360 do
-        FlipR = FlipR + 1
-    end
-    if FlipR == 360 then
-        DoFlip = 0
-        FlipR = 0
-    end
     if Main.Fade == Enums.FadeIn and Main.ScreenWait > 0 then
         Main.ScreenWait = Main.ScreenWait - 0.1
     elseif Main.Fade == Enums.FadeIn then
@@ -98,6 +90,12 @@ function love.update()
     -- scrolling bg
     Main.W = Main.W + 1
     if Main.W == 3 then
+        if Main.Flipping == true and Main.Flip < 10 then
+            Main.Flip = Main.Flip + 1
+        elseif Main.Flip == 10 then
+            Main.Flipping = false
+            Main.Flip = 0
+        end
         Main.X = Main.X + 1
         Main.Y = Main.Y + 1
         Main.W = 0
@@ -122,8 +120,8 @@ function love.mousepressed( x, y, button, istouch, presses )
             Main.NextScreen = Enums.Options
             Main.Fade = Enums.FadeOut
             Audio.Select:play()
-        elseif x >= 129 and y >= 4 and x < 142 and y < 17 then --cool logo flip
-            DoFlip = 1
+        elseif x >= 129 and y >= 4 and x < 142 and y < 17 and Main.Flipping == false then --cool logo flip
+            Main.Flipping = true
             Audio.Select:play()
         elseif x >= 22 and y >= 161 and x < 37 and y < 170 then --quit
             love.event.quit()
