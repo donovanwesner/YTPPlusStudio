@@ -95,6 +95,7 @@ function love.update()
         elseif Main.Flip == -10 then
             Main.Flipping = false
             Main.Flip = 0
+            Audio.Back:play()
         end
         Main.X = Main.X + 1
         Main.Y = Main.Y + 1
