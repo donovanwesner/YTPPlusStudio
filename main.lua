@@ -28,14 +28,14 @@ function love.draw()
     love.graphics.setBackgroundColor(0.25,0.25,0.25,Main.Boot) --#404040
     --tiled background
     love.graphics.setColor(0.4,0.4,0.4)
-    love.graphics.draw(Graphics.Tiles, Graphics.TiledQuad, Main.X - Enums.BackgroundSize, Main.Y - Enums.BackgroundSize)
-    love.graphics.draw(Graphics.Tiles, Graphics.TiledQuad, Main.X + Enums.BackgroundSize, Main.Y + Enums.BackgroundSize)
-    love.graphics.draw(Graphics.Tiles, Graphics.TiledQuad, Main.X + Enums.BackgroundSize, Main.Y - Enums.BackgroundSize)
-    love.graphics.draw(Graphics.Tiles, Graphics.TiledQuad, Main.X - Enums.BackgroundSize, Main.Y + Enums.BackgroundSize)
+    love.graphics.draw(Graphics.Tiles, Graphics.TiledQuad, Main.X - Enums.BackgroundSize, Main.Y - Enums.BackgroundSize) --bottom left corner
+    love.graphics.draw(Graphics.Tiles, Graphics.TiledQuad, Main.X + Enums.BackgroundSize, Main.Y + Enums.BackgroundSize) --top right corner
+    love.graphics.draw(Graphics.Tiles, Graphics.TiledQuad, Main.X + Enums.BackgroundSize, Main.Y - Enums.BackgroundSize) --bottom left corner
+    love.graphics.draw(Graphics.Tiles, Graphics.TiledQuad, Main.X - Enums.BackgroundSize, Main.Y + Enums.BackgroundSize) --top left corner
     --end bg
     love.graphics.setColor(0,0,0,Main.Boot)
     love.graphics.rectangle("fill",2,2,Enums.Width-4,17) --title bar
-    --border
+    --these are all parameters for the border around the screen:
     love.graphics.setColor(0.5,0.5,0.5,Main.Boot)
     love.graphics.rectangle("fill",0,0,2,Enums.Height)
     love.graphics.rectangle("fill",Enums.Width-2,0,2,Enums.Height)
@@ -56,12 +56,12 @@ function love.draw()
         --draw screen types
     else --menu
         --header
-        love.graphics.setColor(1,1,1,Main.Boot) --#FFFFFF
-        love.graphics.draw(Graphics.Icon, 129+Graphics.Icon:getWidth()/2,4+Graphics.Icon:getHeight()/2, Main.Flip, 1, 1, Graphics.Icon:getWidth()/2, Graphics.Icon:getHeight()/2)
+        love.graphics.setColor(1,1,1,Main.Boot) --white with boot sequence as its transparency
+        love.graphics.draw(Graphics.Icon, 129+Graphics.Icon:getWidth()/2,4+Graphics.Icon:getHeight()/2, Main.Flip, 1, 1, Graphics.Icon:getWidth()/2, Graphics.Icon:getHeight()/2) --this icon is positioned by its center and rotates that way
         love.graphics.setFont(Graphics.Munro.Regular)
-        love.graphics.print("ytp+ studio",146,6-3)
+        love.graphics.print("ytp+ studio",146,6-3) --minus 3 due to font scaling
         --buttons
-        love.graphics.print("generate\n\nplugins\n\noptions\n\nquit",22,89-3)
+        love.graphics.print("generate\n\nplugins\n\noptions\n\nquit",22,89-3) --main menu, not centered, \n means new line
     end
     --fading
     love.graphics.setColor(1,1,1,Main.ScreenWait)
@@ -76,29 +76,29 @@ function love.draw()
     love.graphics.draw(Canvas, 0, 0, 0, Data.Scaling, Data.Scaling)
 end
 function love.update()
-    if Main.Boot < 1 then --boot fading
-        Main.Boot = Main.Boot + 0.005
+    if Main.Boot < 1 then --boot sequence
+        Main.Boot = Main.Boot + 0.005 --despacito
     end
-    --fading
-    if Main.Fade == Enums.FadeOut and Main.ScreenWait < 1 then
+    --screen change fading
+    if Main.Fade == Enums.FadeOut and Main.ScreenWait < 1 then --fade to white
         Main.ScreenWait = Main.ScreenWait + 0.1
-    elseif Main.Fade == Enums.FadeOut then
+    elseif Main.Fade == Enums.FadeOut then --begin fade in and change to new screen
         Main.Fade = Enums.FadeIn
         Main.LastScreen = Main.ActiveScreen
         Main.ActiveScreen = Main.NextScreen
     end
-    if Main.Fade == Enums.FadeIn and Main.ScreenWait > 0 then
+    if Main.Fade == Enums.FadeIn and Main.ScreenWait > 0 then --fade out from white into new screen
         Main.ScreenWait = Main.ScreenWait - 0.1
-    elseif Main.Fade == Enums.FadeIn then
+    elseif Main.Fade == Enums.FadeIn then --fade over
         Main.ScreenWait = 0
         Main.Fade = Enums.FadeNone
     end
-    -- scrolling bg
+    -- scrolling bg and flipping
     Main.W = Main.W + 1
-    if Main.W == 3 then
+    if Main.W == 3 then --slow down animations so they're not too fast
         if Main.Flipping == true and Main.Flip > -10 then --logo flip
             Main.Flip = Main.Flip - 1
-        elseif Main.Flip == -10 then
+        elseif Main.Flip == -10 then --that's enough flipping
             Main.Flipping = false
             Main.Flip = 0
             Audio.Back:play()
@@ -107,13 +107,13 @@ function love.update()
         Main.Y = Main.Y + 1
         Main.W = 0
     end
-    if Main.X >= Enums.BackgroundSize then Main.X = 0 end
-    if Main.Y >= Enums.BackgroundSize then Main.Y = 0 end
+    if Main.X >= Enums.BackgroundSize then Main.X = 0 end --reset to original x flawlessly
+    if Main.Y >= Enums.BackgroundSize then Main.Y = 0 end --ditto with y
 end
 function love.mousepressed( x, y, button, istouch, presses )
-    Main.Boot = 1
-    x = x/Data.Scaling
-    y = y/Data.Scaling
+    Main.Boot = 1 --disable boot sequence
+    x = x/Data.Scaling --scale up mouse x
+    y = y/Data.Scaling --ditto with y
     if Main.ActiveScreen == Enums.Menu then
         if x >= 22 and y >= 89 and x < 58 and y < 98 then --generate
             Main.NextScreen = Enums.Generate
@@ -144,7 +144,7 @@ end
 function love.keypressed(k)
     --alt operators
     if love.keyboard.isDown("ralt") or love.keyboard.isDown("lalt") then
-        if k == "left" and Main.ActiveScreen ~= Enums.Menu then --back
+        if k == "left" and Main.ActiveScreen ~= Enums.Menu then --back, same as pressing the button
             Main.NextScreen = Main.LastScreen
             Main.Fade = Enums.FadeOut
             Audio.Back:play()
