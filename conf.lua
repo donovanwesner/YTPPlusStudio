@@ -8,6 +8,7 @@ function love.conf(t)
     else
         t.window.title = "ytp+ studio [under construction]"
     end
+    love.filesystem.setIdentity("ytpplusstudio_"..Enums.Version.Major)
     t.window.width = Enums.Width
     t.window.height = Enums.Height
     t.window.icon = "logo.png"

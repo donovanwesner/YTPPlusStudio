@@ -22,6 +22,7 @@ function love.load()
     love.window.setMode( Enums.Width*Data.Scaling, Enums.Height*Data.Scaling, Enums.WindowFlags )
     love.mouse.setCursor( Graphics.Cursor )
     Audio.Boot:play()
+    Save()
 end
 function love.draw()
     love.graphics.setCanvas(Canvas) --This sets the draw target to the canvas
@@ -198,10 +199,10 @@ function love.mousepressed( x, y, button, istouch, presses )
         end
     elseif Main.Prompt.State == Enums.PromptStay then
         Audio.Hover:play()
-        if x >= 50 and y >= 141 and x < 270 and y < 167 then --option 1
+        if x >= 50 and y >= 135 and x < 270 and y < 161 then --option 1
             Main.Prompt.State = Enums.PromptClose
             Main.Prompt.Callback1()
-        elseif x >= 50 and y >= 169 and x < 270 and y < 194 then --option 2
+        elseif x >= 50 and y >= 163 and x < 270 and y < 189 then --option 2
             Main.Prompt.State = Enums.PromptClose
             Main.Prompt.Callback2()
         end
@@ -255,4 +256,7 @@ function promptytpcli()
     else
         return true
     end
+end
+function Save()
+    love.filesystem.write("settings.txt",TSerial.pack(Data, nil, true)) --save data
 end
