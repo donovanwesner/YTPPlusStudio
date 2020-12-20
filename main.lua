@@ -196,14 +196,17 @@ function love.mousepressed( x, y, button, istouch, presses )
             Main.Fade = Enums.FadeOut
             Audio.Back:play()
         end
-    elseif Main.Prompt.State == Enums.PromptStay then
-        Audio.Hover:play()
+    elseif Main.Prompt.State == Enums.PromptStay then  
         if x >= 50 and y >= 141 and x < 270 and y < 167 then --option 1
             Main.Prompt.State = Enums.PromptClose
             Main.Prompt.Callback1()
+            Audio.Select:play()
         elseif x >= 50 and y >= 169 and x < 270 and y < 194 then --option 2
             Main.Prompt.State = Enums.PromptClose
             Main.Prompt.Callback2()
+            Audio.Select:play()
+        else
+            Audio.Hover:play()
         end
     end
 end
