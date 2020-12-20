@@ -22,6 +22,7 @@ function love.load()
     love.window.setMode( Enums.Width*Data.Scaling, Enums.Height*Data.Scaling, Enums.WindowFlags )
     love.mouse.setCursor( Graphics.Cursor )
     Audio.Boot:play()
+    Save()
 end
 function love.draw()
     love.graphics.setCanvas(Canvas) --This sets the draw target to the canvas
@@ -258,4 +259,7 @@ function promptytpcli()
     else
         return true
     end
+end
+function Save()
+    love.filesystem.write("settings.txt",TSerial.pack(Data, nil, true)) --save data
 end

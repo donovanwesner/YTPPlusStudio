@@ -1,4 +1,5 @@
 *.love
 *.exe
+*.txt
 bin/
 YTPPlusCLI/
