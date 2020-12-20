@@ -168,34 +168,17 @@ function love.mousepressed( x, y, button, istouch, presses )
     if Main.Prompt == nil then
         if Main.ActiveScreen == Enums.Menu then
             if x >= 22 and y >= 89 and x < 58 and y < 98 then --generate
-                local info = love.filesystem.getInfo("YTPPlusCLI")
-                if not info then --does not exist
-                    Audio.Prompt:play()
-                    local prompt = {}
-                    prompt.Title = "ytp+ cli was not detected"
-                    prompt.Line1 = "ytp+ cli was not detected in this directory."
-                    prompt.Line2 = "installing ytp+ cli will install tortoisegit and nodejs."
-                    prompt.Line3 = "for mac/linux users, please refer to readme.md."
-                    prompt.Line4 = ""
-                    prompt.Line5 = "would you like to proceed?"
-                    prompt.Choice1 = "yes"
-                    prompt.Callback1 = function()
-                        os.execute("start install.bat")
-                    end
-                    prompt.Callback2 = function() end
-                    prompt.Choice2 = "no"
-                    prompt.Y = -240
-                    prompt.State = Enums.PromptOpen
-                    Main.Prompt = prompt
-                else
+                if promptytpcli() then
                     Main.NextScreen = Enums.Generate
                     Main.Fade = Enums.FadeOut
                     Audio.Select:play()
                 end
             elseif x >= 22 and y >= 113 and x < 49 and y < 122 then --plugins
-                Main.NextScreen = Enums.Plugins
-                Main.Fade = Enums.FadeOut
-                Audio.Select:play()
+                if promptytpcli() then
+                    Main.NextScreen = Enums.Plugins
+                    Main.Fade = Enums.FadeOut
+                    Audio.Select:play()
+                end
             elseif x >= 22 and y >= 137 and x < 51 and y < 146 then --options
                 Main.NextScreen = Enums.Options
                 Main.Fade = Enums.FadeOut
@@ -246,5 +229,30 @@ function love.keypressed(k)
             Main.Fade = Enums.FadeOut
             Audio.Select:play()
         end]]
+    end
+end
+function promptytpcli()
+    local info = love.filesystem.getInfo("YTPPlusCLI")
+    if not info then --does not exist
+        Audio.Prompt:play()
+        local prompt = {}
+        prompt.Title = "ytp+ cli was not detected"
+        prompt.Line1 = "ytp+ cli was not detected in this directory."
+        prompt.Line2 = "installing ytp+ cli will install tortoisegit and nodejs."
+        prompt.Line3 = "for mac/linux users, please refer to readme.md."
+        prompt.Line4 = ""
+        prompt.Line5 = "would you like to proceed?"
+        prompt.Choice1 = "yes"
+        prompt.Callback1 = function()
+            os.execute("start install.bat")
+        end
+        prompt.Callback2 = function() end
+        prompt.Choice2 = "no"
+        prompt.Y = -240
+        prompt.State = Enums.PromptOpen
+        Main.Prompt = prompt
+        return false
+    else
+        return true
     end
 end
