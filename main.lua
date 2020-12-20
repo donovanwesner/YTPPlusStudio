@@ -149,6 +149,10 @@ function love.keypressed(k)
             Main.NextScreen = Main.LastScreen
             Main.Fade = Enums.FadeOut
             Audio.Back:play()
+        else if k == "right" and Main.ActiveScreen == Enums.Menu and Main.LastScreen ~= Enums.Menu then --forward! beat that B) my code is cooler B) im cooler B) - nuppington
+            Main.NextScreen = Main.LastScreen
+            Main.Fade = Enums.FadeOut
+            Audio.Back:play()
         end
         --up and down buttons removed because they can break submenus
         --[[elseif k == "up" and Main.ActiveScreen - 1 >= Enums.Menu and Main.ActiveScreen ~= Enums.Menu then --up
@@ -161,4 +165,5 @@ function love.keypressed(k)
             Audio.Select:play()
         end]]
     end
+end
 end
