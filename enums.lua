@@ -38,5 +38,23 @@ return {
         "generate",
         "plugins",
         "options"
+    },
+    --prompt states
+    PromptOpen = 0,
+    PromptStay = 1,
+    PromptClose = 2,
+    BasePrompt = {
+        Title = "",
+        Line1 = "",
+        Line2 = "",
+        Line3 = "",
+        Line4 = "",
+        Line5 = "",
+        Choice1 = "",
+        Choice2 = "",
+        Callback1 = function() end,
+        Callback2 = function() end,
+        State = 0,
+        Y = -240
     }
 }

@@ -16,7 +16,8 @@ function love.load()
         X = 0,
         Y = 0,
         Flip = 0,
-        Flipping = false
+        Flipping = false,
+        Prompt = nil
     }
     love.window.setMode( Enums.Width*Data.Scaling, Enums.Height*Data.Scaling, Enums.WindowFlags )
     love.mouse.setCursor( Graphics.Cursor )
@@ -61,6 +62,9 @@ function love.draw()
         love.graphics.setFont(Graphics.Munro.Regular)
         love.graphics.print("ytp+ studio",146,6-3) --minus 3 due to font scaling
         --buttons
+        love.graphics.setColor(0,0,0,Main.Boot)
+        love.graphics.print("generate\n\nplugins\n\noptions\n\nquit",23,90-3) --shadow
+        love.graphics.setColor(1,1,1,Main.Boot)
         love.graphics.print("generate\n\nplugins\n\noptions\n\nquit",22,89-3) --main menu, not centered, \n means new line
     end
     --fading
@@ -71,11 +75,57 @@ function love.draw()
     love.graphics.setColor(1,0,1,0.1) --pinkish?
     love.graphics.rectangle("fill",0,0,Enums.Width,Enums.Height)
     ]]
+    --prompts
+    if Main.Prompt ~= nil then
+        love.graphics.setColor(0,0,0,0.5)
+        love.graphics.rectangle("fill",0,0,Enums.Width,Enums.Height)
+        love.graphics.setColor(1,1,1)
+        love.graphics.draw(Graphics.Prompt,46+Graphics.Prompt:getWidth()/2,Main.Prompt.Y+Graphics.Prompt:getWidth()/2, 0, 1, 1, Graphics.Prompt:getWidth()/2, Graphics.Prompt:getHeight()/2)
+        love.graphics.setColor(0,0,0)
+        --description shadows
+        love.graphics.printf(Main.Prompt.Line1, 1, Main.Prompt.Y+66-2, Enums.Width, "center")
+        love.graphics.printf(Main.Prompt.Line2, 1, Main.Prompt.Y+78-2, Enums.Width, "center")
+        love.graphics.printf(Main.Prompt.Line3, 1, Main.Prompt.Y+90-2, Enums.Width, "center")
+        love.graphics.printf(Main.Prompt.Line4, 1, Main.Prompt.Y+102-2, Enums.Width, "center")
+        love.graphics.printf(Main.Prompt.Line5, 1, Main.Prompt.Y+114-2, Enums.Width, "center")
+        --choice shadows
+        love.graphics.printf(Main.Prompt.Choice1, 1, Main.Prompt.Y+144-2, Enums.Width, "center")
+        love.graphics.printf(Main.Prompt.Choice2, 1, Main.Prompt.Y+172-2, Enums.Width, "center")
+        love.graphics.setColor(1,1,1)
+        --description
+        love.graphics.printf(Main.Prompt.Line1, 0, Main.Prompt.Y+66-3, Enums.Width, "center")
+        love.graphics.printf(Main.Prompt.Line2, 0, Main.Prompt.Y+78-3, Enums.Width, "center")
+        love.graphics.printf(Main.Prompt.Line3, 0, Main.Prompt.Y+90-3, Enums.Width, "center")
+        love.graphics.printf(Main.Prompt.Line4, 0, Main.Prompt.Y+102-3, Enums.Width, "center")
+        love.graphics.printf(Main.Prompt.Line5, 0, Main.Prompt.Y+114-3, Enums.Width, "center")
+        --choices
+        love.graphics.printf(Main.Prompt.Choice1, 0, Main.Prompt.Y+144-3, Enums.Width, "center")
+        love.graphics.printf(Main.Prompt.Choice2, 0, Main.Prompt.Y+172-3, Enums.Width, "center")
+        --title
+        love.graphics.printf(Main.Prompt.Title, 0, Main.Prompt.Y+41-3, Enums.Width, "center")
+    end
+    --end prompts
     love.graphics.setCanvas() --This sets the target back to the screen
     love.graphics.setColor(1,1,1,Main.Boot) --#FFFFFF
     love.graphics.draw(Canvas, 0, 0, 0, Data.Scaling, Data.Scaling)
 end
-function love.update()
+function love.update(dt)
+    if Main.Prompt ~= nil then
+        if Main.Prompt.State == Enums.PromptOpen then
+            if Main.Prompt.Y < 0 then
+                Main.Prompt.Y = Main.Prompt.Y + 10
+            else
+                Main.Prompt.Y = 0
+                Main.Prompt.State = Enums.PromptStay
+            end
+        elseif Main.Prompt.State == Enums.PromptClose then
+            if Main.Prompt.Y < 240 then
+                Main.Prompt.Y = Main.Prompt.Y + 10
+            else
+                Main.Prompt = nil
+            end
+        end
+    end
     if Main.Boot < 1 then --boot sequence
         Main.Boot = Main.Boot + 0.005 --despacito
     end
@@ -115,31 +165,63 @@ function love.mousepressed( x, y, button, istouch, presses )
     x = x/Data.Scaling --scale up mouse x
     y = y/Data.Scaling --ditto with y
     love.audio.stop()
-    if Main.ActiveScreen == Enums.Menu then
-        if x >= 22 and y >= 89 and x < 58 and y < 98 then --generate
-            Main.NextScreen = Enums.Generate
+    if Main.Prompt == nil then
+        if Main.ActiveScreen == Enums.Menu then
+            if x >= 22 and y >= 89 and x < 58 and y < 98 then --generate
+                local info = love.filesystem.getInfo("YTPPlusCLI")
+                if not info then --does not exist
+                    Audio.Prompt:play()
+                    local prompt = {}
+                    prompt.Title = "ytp+ cli was not detected"
+                    prompt.Line1 = "ytp+ cli was not detected in this directory."
+                    prompt.Line2 = "installing ytp+ cli will install tortoisegit and nodejs."
+                    prompt.Line3 = "for mac/linux users, please refer to readme.md."
+                    prompt.Line4 = ""
+                    prompt.Line5 = "would you like to proceed?"
+                    prompt.Choice1 = "yes"
+                    prompt.Callback1 = function()
+                        os.execute("start install.bat")
+                    end
+                    prompt.Callback2 = function() end
+                    prompt.Choice2 = "no"
+                    prompt.Y = -240
+                    prompt.State = Enums.PromptOpen
+                    Main.Prompt = prompt
+                else
+                    Main.NextScreen = Enums.Generate
+                    Main.Fade = Enums.FadeOut
+                    Audio.Select:play()
+                end
+            elseif x >= 22 and y >= 113 and x < 49 and y < 122 then --plugins
+                Main.NextScreen = Enums.Plugins
+                Main.Fade = Enums.FadeOut
+                Audio.Select:play()
+            elseif x >= 22 and y >= 137 and x < 51 and y < 146 then --options
+                Main.NextScreen = Enums.Options
+                Main.Fade = Enums.FadeOut
+                Audio.Select:play()
+            elseif x >= 129 and y >= 4 and x < 142 and y < 17 and Main.Flipping == false then --cool logo flip
+                Main.Flipping = true
+                Audio.Select:play()
+            elseif x >= 22 and y >= 161 and x < 37 and y < 170 then --quit
+                love.event.quit()
+            else
+                Audio.Hover:play()
+            end
+        elseif x >= 2 and y >= 2 and x < 19 and y < 19 then --back button
+            Main.NextScreen = Main.LastScreen
             Main.Fade = Enums.FadeOut
-            Audio.Select:play()
-        elseif x >= 22 and y >= 113 and x < 49 and y < 122 then --plugins
-            Main.NextScreen = Enums.Plugins
-            Main.Fade = Enums.FadeOut
-            Audio.Select:play()
-        elseif x >= 22 and y >= 137 and x < 51 and y < 146 then --options
-            Main.NextScreen = Enums.Options
-            Main.Fade = Enums.FadeOut
-            Audio.Select:play()
-        elseif x >= 129 and y >= 4 and x < 142 and y < 17 and Main.Flipping == false then --cool logo flip
-            Main.Flipping = true
-            Audio.Select:play()
-        elseif x >= 22 and y >= 161 and x < 37 and y < 170 then --quit
-            love.event.quit()
-        else
-            Audio.Hover:play()
+            Audio.Back:play()
         end
-    elseif x >= 2 and y >= 2 and x < 19 and y < 19 then --back button
-        Main.NextScreen = Main.LastScreen
-        Main.Fade = Enums.FadeOut
-        Audio.Back:play()
+    elseif Main.Prompt.State == Enums.PromptStay then
+        Audio.Hover:play()
+        if x >= 50 and y >= 141 and x < 270 and y < 167 then --option 1
+            Main.Prompt.State = Enums.PromptClose
+            Main.Prompt.Callback1()
+        elseif x >= 50 and y >= 169 and x < 270 and y < 194 then --option 2
+            Main.Prompt.State = Enums.PromptClose
+            Main.Prompt.Callback2()
+        end
     end
 end
 function love.keypressed(k)
@@ -149,7 +231,7 @@ function love.keypressed(k)
             Main.NextScreen = Main.LastScreen
             Main.Fade = Enums.FadeOut
             Audio.Back:play()
-        else if k == "right" and Main.ActiveScreen == Enums.Menu and Main.LastScreen ~= Enums.Menu then --forward! beat that B) my code is cooler B) im cooler B) - nuppington
+        elseif k == "right" and Main.ActiveScreen == Enums.Menu and Main.LastScreen ~= Enums.Menu then --forward! beat that B) my code is cooler B) im cooler B) - nuppington
             Main.NextScreen = Main.LastScreen
             Main.Fade = Enums.FadeOut
             Audio.Back:play()
@@ -165,5 +247,4 @@ function love.keypressed(k)
             Audio.Select:play()
         end]]
     end
-end
 end

@@ -12,5 +12,6 @@ return {
         Small = love.graphics.newFont("fonts/munro-small.ttf", 10, "mono"),
         Narrow = love.graphics.newFont("fonts/munro-narrow.ttf", 10, "mono")
     },
-    Cursor = love.mouse.newCursor( love.image.newImageData( "graphics/cursor.png" ), 0, 0 )
+    Cursor = love.mouse.newCursor( love.image.newImageData( "graphics/cursor.png" ), 0, 0 ),
+    Prompt = love.graphics.newImage( "graphics/prompt.png" )
 }
