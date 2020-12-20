@@ -114,6 +114,7 @@ function love.mousepressed( x, y, button, istouch, presses )
     Main.Boot = 1 --disable boot sequence
     x = x/Data.Scaling --scale up mouse x
     y = y/Data.Scaling --ditto with y
+    love.audio.stop()
     if Main.ActiveScreen == Enums.Menu then
         if x >= 22 and y >= 89 and x < 58 and y < 98 then --generate
             Main.NextScreen = Enums.Generate
