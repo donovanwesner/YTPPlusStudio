@@ -3,8 +3,8 @@ return {
         Major = 0,
         Minor = 1,
         Patch = 0,
-        Label = "publictestbuild",
-        Candidate = 1
+        Label = nil,
+        Candidate = 0
     },
     --window options
     Width = 320,
@@ -33,11 +33,32 @@ return {
     Generate = 1,
     Plugins = 2,
     Options = 3,
-    LastScreen = 4, --how many screens are there?
+    LastScreen = 4, --count of how many "real" screens there are
+    --text entry screens
+    TextOutput = 4,
+    TextMinStream = 5,
+    TextMaxStream = 6,
+    TextClips = 7,
+    TextWidth = 8,
+    TextHeight = 9,
+    TextPluginTest = 10,
+    TextGlobalPlugin = 11,
+    TextFPS = 12,
+    TotalScreens = 12, --count of all screens in total
     ScreenNames = {
+        [0] = "main menu",
         "generate",
         "plugins",
-        "options"
+        "options",
+        "text entry - output",
+        "text entry - minimum stream duration",
+        "text entry - maximum stream duration",
+        "text entry - clip count",
+        "text entry - width",
+        "text entry - height",
+        "text entry - plugin test",
+        "text entry - global plugin",
+        "text entry - fps"
     },
     --prompt states
     PromptOpen = 0,
@@ -56,5 +77,83 @@ return {
         Callback2 = function() end,
         State = 0,
         Y = -240
+    },
+    --boot types
+    BootNormal = 0,
+    BootNoAudio = 1,
+    BootNone = 2,
+    --background types
+    BackgroundNormal = 0,
+    BackgroundStatic = 1,
+    BackgroundNone = 2,
+    BackgroundBlack = 3,
+    --fade toggles
+    FadeWhite = 0,
+    FadeBlack = 1,
+    FadeNone = 2,
+    --options, not yet implemented
+    OptionsNames = {
+        Scaling = "window scale",
+        BootType = "boot type",
+        BackgroundType = "background type",
+        LastScreen = "back screen",
+        ActiveScreen = "startup screen",
+        NextScreen = "next screen",
+        FadeType = "fade type",
+        Volume = "volume",
+        InstantPrompts = "instant prompts"
+    },
+    OptionsEnums = {
+        BootType = {
+            [0] = "fade w/sfx",
+            "fade silently",
+            "none",
+            "out of bounds"
+        },
+        BackgroundType = {
+            [0] = "scrolling",
+            "static",
+            "no tiles",
+            "none",
+            "out of bounds"
+        },
+        LastScreen = {
+            [0] = "main menu",
+            "generate",
+            "plugins",
+            "options",
+            "out of bounds"
+        },
+        ActiveScreen = {
+            [0] = "main menu",
+            "generate",
+            "plugins",
+            "options",
+            "out of bounds"
+        },
+        NextScreen = {
+            [0] = "main menu",
+            "generate",
+            "plugins",
+            "options",
+            "out of bounds"
+        },
+        FadeType = {
+            [0] = "white flash",
+            "black flash",
+            "instant",
+            "out of bounds"
+        },
+        InstantPrompts = {
+            [true] = "on",
+            [false] = "off",
+            [0] = "out of bounds",
+            [1] = "out of bounds"
+        }
+    },
+    BoolString = {
+        [true] = "true",
+        [false] = "false",
+        [0] = "false"
     }
 }

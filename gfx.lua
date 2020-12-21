@@ -13,5 +13,25 @@ return {
         Narrow = love.graphics.newFont("fonts/munro-narrow.ttf", 10, "mono")
     },
     Cursor = love.mouse.newCursor( love.image.newImageData( "graphics/cursor.png" ), 0, 0 ),
-    Prompt = love.graphics.newImage( "graphics/prompt.png" )
+    Prompt = love.graphics.newImage( "graphics/prompt.png" ),
+    Choice = love.graphics.newImage( "graphics/choice.png" ),
+    Generate = {
+        ImportBG = love.graphics.newImage( "graphics/generate/importbg.png" ),
+        Down = love.graphics.newImage( "graphics/generate/down.png" ),
+        Remove = love.graphics.newImage( "graphics/generate/remove.png" ),
+        Up = love.graphics.newImage( "graphics/generate/up.png" ),
+        Dividers = {
+            GlobalPlugin = love.graphics.newImage( "graphics/generate/globalplugindivider.png" ),
+            PluginTest = love.graphics.newImage( "graphics/generate/plugintestdivider.png" ),
+            Import = love.graphics.newImage( "graphics/generate/importdivider.png" ),
+            Output = love.graphics.newImage( "graphics/generate/outputdivider.png" )
+        },
+        Buttons = {
+            Checkbox = love.graphics.newImage( "graphics/generate/checkbox.png" ),
+            InputField = love.graphics.newImage( "graphics/generate/inputfield.png" ),
+            GlobalPlugin = love.graphics.newImage( "graphics/generate/globalpluginopen.png" ),
+            PluginTest = love.graphics.newImage( "graphics/generate/plugintestopen.png" ),
+            Output = love.graphics.newImage( "graphics/generate/outputopen.png" )
+        }
+    }
 }
