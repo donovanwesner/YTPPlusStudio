@@ -240,12 +240,12 @@ function promptytpcli()
     if not info then --does not exist
         Audio.Prompt:play()
         local prompt = {}
-        prompt.Title = "ytp+ cli was not detected"
+        prompt.Title = "ytp+ cli wasn't found"
         prompt.Line1 = "ytp+ cli was not detected in this directory."
-        prompt.Line2 = "installing ytp+ cli will install tortoisegit and nodejs."
-        prompt.Line3 = "for mac/linux users, please refer to readme.md."
+        prompt.Line2 = "installing ytp+ cli will add tortoisegit and nodejs."
+        prompt.Line3 = "for mac/linux users, please read readme.md."
         prompt.Line4 = ""
-        prompt.Line5 = "would you like to proceed?"
+        prompt.Line5 = "install it?"
         prompt.Choice1 = "yes"
         prompt.Callback1 = function()
             os.execute("start install.bat")
