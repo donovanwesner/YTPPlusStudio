@@ -33,21 +33,25 @@ SET REPO=https://github.com/YTP-Plus/%REPONAME%.git
 SET REPOPATH=./%REPONAME%
 SET GITVER=2.11.0.0
 SET NODEVER=14.15.3
-ECHO Checking if Git is already installed...
+TITLE ytp+ cli Installer
+ECHO -----
+ECHO Any issues during installation? Contact us on Discord at https://discord.gg/8ppmspR6Wh
+ECHO -----
+ECHO Checking if git is already installed...
 WHERE git
-IF %ERRORLEVEL% EQU 0 ECHO Git is already installed.
-IF %ERRORLEVEL% NEQ 0 ECHO Git not detected. Installing TortoiseGit... && START /WAIT msiexec.exe /i https://download.tortoisegit.org/tgit/%GITVER%/TortoiseGit-%GITVER%-64bit.msi /quiet && ECHO Finished installing TortoiseGit.
-SET ERRORLEVEL=0
+IF %ERRORLEVEL% EQU 0 ECHO 'git' is already installed. Proceeding...
+IF %ERRORLEVEL% NEQ 0 ECHO 'git' not detected. Please install 'Git for Windows' and restart your PC before proceeding. && START "" https://git-scm.com/ && EXIT 1
 ECHO -----
-ECHO Checking if Node is already installed...
+ECHO Checking if node is already installed...
 WHERE node
-IF %ERRORLEVEL% EQU 0 ECHO Node is already installed.
-IF %ERRORLEVEL% NEQ 0 ECHO Node not detected. Installing NodeJS... && START /WAIT msiexec.exe /i https://nodejs.org/dist/latest-v4.x/node-v%NODEVER%-x64.msi /quiet && ECHO Finished installing NodeJS.
+IF %ERRORLEVEL% EQU 0 ECHO 'node' is already installed. Proceeding...
+IF %ERRORLEVEL% NEQ 0 ECHO 'node' not detected. Please install 'NodeJS' and restart your PC before proceeding. && START "" https://nodejs.org/ && EXIT 1
 ECHO -----
-ECHO Pressing a key to continue will clone %REPO% here and install it via NPM:
+ECHO Pressing a key to continue will clone %REPONAME% here (or pull latest changes) and install it via NPM:
 PAUSE
 IF NOT EXIST %REPOPATH% git clone %REPO%
 CD %REPOPATH%
+CMD /C git pull origin main
 CMD /C npm install
 ECHO -----
 ECHO Finished! Pressing a key will exit:
