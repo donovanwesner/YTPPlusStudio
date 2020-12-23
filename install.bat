@@ -31,8 +31,6 @@ if '%errorlevel%' NEQ '0' (
 SET REPONAME=YTPPlusCLI
 SET REPO=https://github.com/YTP-Plus/%REPONAME%.git
 SET REPOPATH=./%REPONAME%
-SET GITVER=2.11.0.0
-SET NODEVER=14.15.3
 TITLE ytp+ cli Installer
 ECHO -----
 ECHO Any issues during installation? Contact us on Discord at https://discord.gg/8ppmspR6Wh

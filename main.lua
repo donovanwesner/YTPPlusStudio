@@ -399,8 +399,7 @@ function love.mousepressed( x, y, button, istouch, presses )
 			elseif x >= 88 and y >= 144 and x < 103 and y < 159 then --transitions
 				--Data.Generate.Transitions = not Data.Generate.Transitions
 				--Audio.Option:play()
-				Data.Generate.Transitions = false --not yet implemented
-				Audio.Prompt:play()
+				promptnotimplemented()
 			elseif x >= 120 and y >= 161 and x < 149 and y < 176 then --min stream
 				Main.TextEntry = "MinStream"
 				Main.OldTextBuffer = Data.Generate[Main.TextEntry]
@@ -437,11 +436,9 @@ function love.mousepressed( x, y, button, istouch, presses )
 				Main.NextScreen = Enums.TextPluginTest
 				Main.Fade = Enums.FadeOut
 				Audio.Select:play()]]
-				Data.Generate.PluginTestActive = false --not yet implemented
-				Audio.Prompt:play()
+				promptnotimplemented()
 			elseif x >= 301 and y >= 127 and x < 316 and y < 142 then --plugin test active
-				Data.Generate.PluginTestActive = false --not yet implemented
-				Audio.Prompt:play()
+				promptnotimplemented()
 				--Data.Generate.PluginTestActive = not Data.Generate.PluginTestActive
 				--Audio.Option:play()
 			elseif x >= 163 and y >= 144 and x < 223 and y < 159 then --global plugin
@@ -450,13 +447,11 @@ function love.mousepressed( x, y, button, istouch, presses )
 				Main.NextScreen = Enums.TextGlobalPlugin
 				Main.Fade = Enums.FadeOut
 				Audio.Select:play()]]--
-				Data.Generate.GlobalPluginActive = false --not yet implemented
-				Audio.Prompt:play()
+				promptnotimplemented()
 			elseif x >= 301 and y >= 144 and x < 316 and y < 159 then --global plugin active
 				--Data.Generate.GlobalPluginActive = not Data.Generate.GlobalPluginActive
 				--Audio.Option:play()
-				Data.Generate.GlobalPluginActive = false --not yet implemented
-				Audio.Prompt:play()
+				promptnotimplemented()
 			elseif x >= 182 and y >= 161 and x < 211 and y < 176 then --fps
 				Main.TextEntry = "FPS"
 				Main.OldTextBuffer = Data.Generate[Main.TextEntry]
@@ -468,7 +463,6 @@ function love.mousepressed( x, y, button, istouch, presses )
 				Save()
 				Audio.Option:play()
 			elseif x >= 248 and y >= 1 and x < 318 and y < 18 then --render and open
-				Audio.Select:play()
 				Render()
 			--remove buttons
 			elseif x >= 301 and y >= 23 and x < 316 and y < 36 and #Data.Generate.Sources >= 1 and Main.Cursor < #Data.Generate.Sources then
@@ -642,28 +636,60 @@ function Render()
 	Save()
 	Audio.Prompt:play()
 	local prompt = {}
-	prompt.Title = "render video"
-	prompt.Line1 = "rendering will launch ytp+ cli in the background."
-	prompt.Line2 = "ytp+ studio will be paused until completion."
-	prompt.Line3 = "we'll try to open the file if its output is a full path."
-	prompt.Line4 = ""
-	prompt.Line5 = "would you like to proceed?"
-	prompt.Choice1 = "yes"
-	prompt.Callback1 = function()
-		local writeto = ""
-		for k,v in pairs(Data.Generate.Sources) do
-			if writeto == "" then
-				writeto = v
-			else
-				writeto = writeto.."\n"..v
+	if Data.Generate.Output ~= "" and Data.Generate.Output ~= nil then
+		prompt.Title = "render video"
+		prompt.Line1 = "rendering will launch ytp+ cli in the background."
+		prompt.Line2 = "ytp+ studio will be paused until completion."
+		prompt.Line3 = "we'll try to open the file if its output is a full path."
+		prompt.Line4 = ""
+		prompt.Line5 = "would you like to proceed?"
+		prompt.Choice1 = "yes"
+		prompt.Callback1 = function()
+			local writeto = ""
+			for k,v in pairs(Data.Generate.Sources) do
+				if writeto == "" then
+					writeto = v
+				else
+					writeto = writeto.."\n"..v
+				end
 			end
+			love.filesystem.write("videos.txt", writeto)
+			os.execute("node "..love.filesystem.getWorkingDirectory().."/YTPPlusCLI/index.js --skip=true --width="..Data.Generate.Width.." --height="..Data.Generate.Height.." --fps="..Data.Generate.FPS.." --input="..love.filesystem.getSaveDirectory().."/videos.txt --output="..Data.Generate.Output.." --clips="..Data.Generate.Clips.." --minstream="..Data.Generate.MinStream.." --maxstream="..Data.Generate.MaxStream.." --usetransitions="..Enums.BoolString[Data.Generate.Transitions])
+			love.system.openURL(Data.Generate.Output)
 		end
-		love.filesystem.write("videos.txt", writeto)
-		os.execute("node "..love.filesystem.getWorkingDirectory().."/YTPPlusCLI/index.js --skip=true --width="..Data.Generate.Width.." --height="..Data.Generate.Height.." --fps="..Data.Generate.FPS.." --input="..love.filesystem.getSaveDirectory().."/videos.txt --output="..Data.Generate.Output.." --clips="..Data.Generate.Clips.." --minstream="..Data.Generate.MinStream.." --maxstream="..Data.Generate.MaxStream.." --usetransitions="..Enums.BoolString[Data.Generate.Transitions])
-		love.system.openURL(Data.Generate.Output)
+		prompt.Callback2 = function() end
+		prompt.Choice2 = "no"
+		prompt.Y = -240
+		prompt.State = Enums.PromptOpen
+	else
+		prompt.Title = "no output file"
+		prompt.Line1 = ""
+		prompt.Line2 = "please set an output file before rendering."
+		prompt.Line3 = "the output file must be in a full path that exists."
+		prompt.Line4 = "setting the output file will allow for rendering."
+		prompt.Line5 = ""
+		prompt.Choice1 = ""
+		prompt.Callback1 = function() end
+		prompt.Callback2 = function() end
+		prompt.Choice2 = "okay"
+		prompt.Y = -240
+		prompt.State = Enums.PromptOpen
 	end
+	Main.Prompt = prompt
+end
+function promptnotimplemented()
+	Audio.Prompt:play()
+	local prompt = {}
+	prompt.Title = "not implemented"
+	prompt.Line1 = ""
+	prompt.Line2 = ""
+	prompt.Line3 = "this feature is currently not implemented."
+	prompt.Line4 = ""
+	prompt.Line5 = ""
+	prompt.Choice1 = ""
+	prompt.Callback1 = function() end
 	prompt.Callback2 = function() end
-	prompt.Choice2 = "no"
+	prompt.Choice2 = "okay"
 	prompt.Y = -240
 	prompt.State = Enums.PromptOpen
 	Main.Prompt = prompt
