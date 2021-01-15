@@ -165,12 +165,16 @@ function love.draw()
 			end
 			--modifier shadows
 			love.graphics.setColor(0,0,0)
-			love.graphics.printf(Data.Generate.Output,44,131-2,230)
+			love.graphics.setScissor(42,131,116,13)
+			love.graphics.print(Data.Generate.Output,44+1,131-2)
+			love.graphics.setScissor( )
 			love.graphics.print(Data.Generate.PluginTest,219,131-2)
 			love.graphics.print(Data.Generate.GlobalPlugin,226,148-2)
 			--modifiers
 			love.graphics.setColor(1,1,1)
-			love.graphics.printf(Data.Generate.Output,43,131-3,230)
+			love.graphics.setScissor(42,131,116,13)
+			love.graphics.print(Data.Generate.Output,44,131-3)
+			love.graphics.setScissor( )
 			love.graphics.print(Data.Generate.PluginTest,218,131-3)
 			love.graphics.print(Data.Generate.GlobalPlugin,225,148-3)
 			love.graphics.print(Data.Generate.MinStream,124,166-3)
