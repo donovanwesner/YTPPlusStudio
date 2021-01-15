@@ -134,7 +134,7 @@ function love.draw()
 			love.graphics.print("fps:",167,165-3)
 			--imports
 			if #Data.Generate.Sources >= 1 and Main.Cursor < #Data.Generate.Sources then
-				love.graphics.print(Data.Generate.Sources[Main.Cursor+1],8,25-3)
+				love.graphics.printf(Data.Generate.Sources[Main.Cursor+1],8,25-3,Enums.Width)
 				love.graphics.draw(Graphics.Generate.Remove,301,21)
 				love.graphics.draw(Graphics.Generate.Dividers.Import,8,36)
 			end
@@ -165,12 +165,12 @@ function love.draw()
 			end
 			--modifier shadows
 			love.graphics.setColor(0,0,0)
-			love.graphics.print(Data.Generate.Output,44,131-2)
+			love.graphics.printf(Data.Generate.Output,44,131-2,Enums.Width)
 			love.graphics.print(Data.Generate.PluginTest,219,131-2)
 			love.graphics.print(Data.Generate.GlobalPlugin,226,148-2)
 			--modifiers
 			love.graphics.setColor(1,1,1)
-			love.graphics.print(Data.Generate.Output,43,131-3)
+			love.graphics.printf(Data.Generate.Output,43,131-3,Enums.Width)
 			love.graphics.print(Data.Generate.PluginTest,218,131-3)
 			love.graphics.print(Data.Generate.GlobalPlugin,225,148-3)
 			love.graphics.print(Data.Generate.MinStream,124,166-3)
