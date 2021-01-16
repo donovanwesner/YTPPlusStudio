@@ -87,11 +87,11 @@ function love.draw()
 			love.graphics.print("use transition clips:",9,148-2)
 			love.graphics.print("minimum stream duration:",9,165-2)
 			love.graphics.print("maximum stream duration:",9,182-2)
-			love.graphics.print("clip count:",9,199-2)
-			love.graphics.print("resolution:",9,216-2)
-			love.graphics.print("x",84,216-2)
 			--shadows right
 			love.graphics.print("fps:",168,165-2)
+			love.graphics.print("clip count:",168,182-2)
+			love.graphics.print("resolution:",168,199-2)
+			love.graphics.print("x",243,199-2)
 			--white color
 			love.graphics.setColor(1,1,1)
 			love.graphics.draw(Graphics.Generate.ImportBG,4,21)
@@ -113,55 +113,67 @@ function love.draw()
 			love.graphics.draw(Graphics.Generate.Buttons.Checkbox,88,145) --transitions
 			love.graphics.draw(Graphics.Generate.Buttons.InputField,120,162) --min stream
 			love.graphics.draw(Graphics.Generate.Buttons.InputField,124,179) --max stream
-			love.graphics.draw(Graphics.Generate.Buttons.InputField,50,196) --clip count
-			love.graphics.draw(Graphics.Generate.Buttons.InputField,52,213) --res width
-			love.graphics.draw(Graphics.Generate.Buttons.InputField,90,213) --res height
 			love.graphics.print("output:",8,131-3)
 			love.graphics.print("use transition clips:",8,148-3)
 			love.graphics.print("minimum stream duration:",8,165-3)
 			love.graphics.print("maximum stream duration:",8,182-3)
-			love.graphics.print("clip count:",8,199-3)
-			love.graphics.print("resolution:",8,216-3)
-			love.graphics.print("x",83,216-3)
 			--right buttons
 			love.graphics.draw(Graphics.Generate.Buttons.PluginTest,163,128)
 			love.graphics.draw(Graphics.Generate.Buttons.GlobalPlugin,163,145)
 			love.graphics.draw(Graphics.Generate.Buttons.Checkbox,301,128) --toggle plugin test
 			love.graphics.draw(Graphics.Generate.Buttons.Checkbox,301,145) --toggle global plugin
 			love.graphics.draw(Graphics.Generate.Buttons.InputField,182,162) --fps
+			love.graphics.draw(Graphics.Generate.Buttons.InputField,209,179) --clip count
+			love.graphics.draw(Graphics.Generate.Buttons.InputField,211,196) --res width
+			love.graphics.draw(Graphics.Generate.Buttons.InputField,249,196) --res height
 			love.graphics.print("plugin test:",167,131-3)
 			love.graphics.print("global plugin:",167,148-3)
 			love.graphics.print("fps:",167,165-3)
+			love.graphics.print("clip count:",167,182-3)
+			love.graphics.print("resolution:",167,199-3)
+			love.graphics.print("x",242,199-3)
 			--imports
 			if #Data.Generate.Sources >= 1 and Main.Cursor < #Data.Generate.Sources then
+				love.graphics.setScissor(6,23,295,14)
 				love.graphics.printf(Data.Generate.Sources[Main.Cursor+1],8,25-3,Enums.Width)
 				love.graphics.draw(Graphics.Generate.Remove,301,21)
 				love.graphics.draw(Graphics.Generate.Dividers.Import,8,36)
+				love.graphics.setScissor()
 			end
 			if #Data.Generate.Sources >= 2 and Main.Cursor+1 < #Data.Generate.Sources then
+				love.graphics.setScissor(6,23,295,29)
 				love.graphics.print(Data.Generate.Sources[Main.Cursor+2],8,40-3)
 				love.graphics.draw(Graphics.Generate.Remove,301,36)
 				love.graphics.draw(Graphics.Generate.Dividers.Import,8,51)
+				love.graphics.setScissor()
 			end
 			if #Data.Generate.Sources >= 3 and Main.Cursor+2 < #Data.Generate.Sources then
+				love.graphics.setScissor(6,23,295,44)
 				love.graphics.print(Data.Generate.Sources[Main.Cursor+3],8,55-3)
 				love.graphics.draw(Graphics.Generate.Remove,301,51)
 				love.graphics.draw(Graphics.Generate.Dividers.Import,8,66)
+				love.graphics.setScissor()
 			end
 			if #Data.Generate.Sources >= 4 and Main.Cursor+3 < #Data.Generate.Sources then
+				love.graphics.setScissor(6,23,295,59)
 				love.graphics.print(Data.Generate.Sources[Main.Cursor+4],8,70-3)
 				love.graphics.draw(Graphics.Generate.Remove,301,66)
 				love.graphics.draw(Graphics.Generate.Dividers.Import,8,81)
+				love.graphics.setScissor()
 			end
 			if #Data.Generate.Sources >= 5 and Main.Cursor+4 < #Data.Generate.Sources then
+				love.graphics.setScissor(6,23,295,74)
 				love.graphics.print(Data.Generate.Sources[Main.Cursor+5],8,85-3)
 				love.graphics.draw(Graphics.Generate.Remove,301,81)
 				love.graphics.draw(Graphics.Generate.Dividers.Import,8,96)
+				love.graphics.setScissor()
 			end
 			if #Data.Generate.Sources >= 6 and Main.Cursor+5 < #Data.Generate.Sources then
+				love.graphics.setScissor(6,23,295,89)
 				love.graphics.print(Data.Generate.Sources[Main.Cursor+6],8,100-3)
 				love.graphics.draw(Graphics.Generate.Remove,301,96)
 				love.graphics.draw(Graphics.Generate.Dividers.Import,8,111)
+				love.graphics.setScissor()
 			end
 			--modifier shadows
 			love.graphics.setColor(0,0,0)
@@ -179,9 +191,9 @@ function love.draw()
 			love.graphics.print(Data.Generate.GlobalPlugin,225,148-3)
 			love.graphics.print(Data.Generate.MinStream,124,166-3)
 			love.graphics.print(Data.Generate.MaxStream,128,183-3)
-			love.graphics.print(Data.Generate.Clips,54,200-3)
-			love.graphics.print(Data.Generate.Width,56,217-3)
-			love.graphics.print(Data.Generate.Height,94,217-3)
+			love.graphics.print(Data.Generate.Clips,213,183-3)
+			love.graphics.print(Data.Generate.Width,215,200-3)
+			love.graphics.print(Data.Generate.Height,253,200-3)
 			love.graphics.print(Data.Generate.FPS,186,166-3)
 			--checkmarks
 			if Data.Generate.Transitions then
@@ -420,19 +432,19 @@ function love.mousepressed( x, y, button, istouch, presses )
 				Main.NextScreen = Enums.TextMaxStream
 				Main.Fade = Enums.FadeOut
 				Audio.Select:play()
-			elseif x >= 50 and y >= 195 and x < 79 and y < 210 then --clips
+			elseif x >= 209 and y >= 179 and x < 238 and y < 194 then --clips
 				Main.TextEntry = "Clips"
 				Main.OldTextBuffer = Data.Generate[Main.TextEntry]
 				Main.NextScreen = Enums.TextClips
 				Main.Fade = Enums.FadeOut
 				Audio.Select:play()
-			elseif x >= 52 and y >= 212 and x < 81 and y < 227 then --width
+			elseif x >= 211 and y >= 196 and x < 240 and y < 211 then --width
 				Main.TextEntry = "Width"
 				Main.OldTextBuffer = Data.Generate[Main.TextEntry]
 				Main.NextScreen = Enums.TextWidth
 				Main.Fade = Enums.FadeOut
 				Audio.Select:play()
-			elseif x >= 90 and y >= 212 and x < 119 and y < 227 then --height
+			elseif x >= 249 and y >= 196 and x < 278 and y < 211 then --height
 				Main.TextEntry = "Height"
 				Main.OldTextBuffer = Data.Generate[Main.TextEntry]
 				Main.NextScreen = Enums.TextHeight
